@@ -3,7 +3,6 @@ import java.util.HashMap;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 
 public class fileReader {
 	
@@ -11,26 +10,25 @@ public class fileReader {
 	public HashMap<Integer, stops> stopsHashMap;
 	
 	public ArrayList<stopTimes> stopTimesList;
-	public HashMap<Integer, stopTimes> stopTimesHashMap;
 	
 	public ArrayList<transfers> transfersList;
 	
-	public fileReader() throws IOException {
+	
+	public fileReader() throws Exception {
 		
 		stopsList = new ArrayList<stops>();
 		stopsHashMap = new HashMap<Integer, stops>();
-		stopsReader(stopsList);
+		stopsReader();
 		
 		stopTimesList = new ArrayList<stopTimes>();
-		stopTimesHashMap = new HashMap<Integer, stopTimes>();
-		stopTimesReader(stopTimesList);
+		stopTimesReader();
 		
 		transfersList = new ArrayList<transfers>();
-		transfersReader(transfersList);
+		transfersReader();
 		
 	}
 	
-	private void stopsReader(ArrayList<stops> stopsList) throws IOException {
+	private void stopsReader() throws IOException {
 		
 		BufferedReader BR = new BufferedReader(new FileReader("stops.txt"));
 		String s;
@@ -216,7 +214,7 @@ public class fileReader {
 		
 	}
 	
-	public void stopTimesReader(ArrayList<stopTimes> stopTimesList) throws IOException {
+	public void stopTimesReader() throws IOException {
 		
 		BufferedReader BR = new BufferedReader(new FileReader("stop_times.txt"));
 		String s;
@@ -376,7 +374,6 @@ public class fileReader {
 				stopTimes stopTimes = new stopTimes(trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type, shape_dist_travelled);
 				
 				stopTimesList.add(stopTimes);
-				stopTimesHashMap.put(stop_id, stopTimes);
 				
 			}
 			
@@ -424,9 +421,100 @@ public class fileReader {
 		
 	}
 
-	public void transfersReader(ArrayList<transfers> transfersList) {
+	public void transfersReader() throws Exception {
 		
+		BufferedReader BR = new BufferedReader(new FileReader("transfers.txt"));
+		String s;
 		
+		for(int i = 0; (s = BR.readLine()) != null; i++) {
+			
+			String[] line = s.split(",");
+			
+			if(i != 0) {
+				
+				
+				
+				int from_stop_id;
+				
+				if(line[0].equals("") || line[0].equals(" ")) {
+					
+					from_stop_id = -1;
+					
+				}
+				
+				else {
+					
+					from_stop_id = Integer.parseInt(line[0]);
+					
+				}
+				
+				
+				
+				int to_stop_id;
+				
+				if(line[1].equals("") || line[1].equals(" ")) {
+					
+					to_stop_id = -1;
+					
+				}
+				
+				else {
+					
+					to_stop_id = Integer.parseInt(line[1]);
+					
+				}
+				
+				
+				
+				int transfer_type;
+				
+				if(line[2].equals("") || line[2].equals(" ")) {
+					
+					transfer_type = -1;
+					
+				}
+				
+				else {
+					
+					transfer_type = Integer.parseInt(line[2]);
+					
+				}
+				
+				
+				
+				int min_transfer_type = 0;
+				double cost = 0;
+				
+				if(transfer_type == 0) {
+					
+					cost = 2;
+					
+				}
+				
+				else if(transfer_type == 2) {
+					
+					min_transfer_type = (int) Double.parseDouble(line[3]);
+					cost = min_transfer_type / 100;
+					
+				}
+				
+				else if(transfer_type != 2 && transfer_type != 0) {
+					
+					throw new Exception("transfer type not valid at line " + i + "\n" + line);
+					
+				}
+				
+				
+				
+				transfers transfer = new transfers(from_stop_id, to_stop_id, transfer_type, min_transfer_type, cost);
+				
+				transfersList.add(transfer);
+				
+			}
+			
+		}
+		
+		BR.close();
 		
 	}
 	
