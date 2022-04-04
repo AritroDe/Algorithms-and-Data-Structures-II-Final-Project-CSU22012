@@ -9,7 +9,10 @@ public class fileReader {
 	
 	public ArrayList<stops> stopsList;
 	public HashMap<Integer, stops> stopsHashMap;
+	
 	public ArrayList<stopTimes> stopTimesList;
+	public HashMap<Integer, stopTimes> stopTimesHashMap;
+	
 	public ArrayList<transfers> transfersList;
 	
 	public fileReader() throws IOException {
@@ -19,6 +22,7 @@ public class fileReader {
 		stopsReader(stopsList);
 		
 		stopTimesList = new ArrayList<stopTimes>();
+		stopTimesHashMap = new HashMap<Integer, stopTimes>();
 		stopTimesReader(stopTimesList);
 		
 		transfersList = new ArrayList<transfers>();
@@ -212,9 +216,211 @@ public class fileReader {
 		
 	}
 	
-	public void stopTimesReader(ArrayList<stopTimes> stopTimesList) {
+	public void stopTimesReader(ArrayList<stopTimes> stopTimesList) throws IOException {
 		
+		BufferedReader BR = new BufferedReader(new FileReader("stop_times.txt"));
+		String s;
 		
+		for(int i = 0; (s = BR.readLine()) != null; i++) {
+			
+			String[] line = s.split(",");
+			
+			if(i != 0) {
+				
+				
+				
+				int trip_id;
+				
+				if(line[0].equals("") || line[0].equals(" ")) {
+					
+					trip_id = -1;
+					
+				}
+				
+				else {
+					
+					trip_id = Integer.parseInt(line[0]);
+					
+				}
+				
+				
+				
+				String arrival_time;
+				
+				if(line[1].equals("") || line[1].equals(" ") || validTimeCheck(line[1]) == false) {
+					
+					arrival_time = "";
+					
+				}
+				
+				else {
+					
+					arrival_time = line[1];
+					
+				}
+				
+				
+				
+				String departure_time;
+				
+				if(line[2].equals("") || line[2].equals(" ") || validTimeCheck(line[2]) == false) {
+					
+					departure_time = "";
+					
+				}
+				
+				else {
+					
+					departure_time = line[2];
+					
+				}
+				
+				
+				
+				int stop_id;
+				
+				if(line[3].equals("") || line[3].equals(" ")) {
+					
+					stop_id = -1;
+					
+				}
+				
+				else {
+					
+					stop_id = Integer.parseInt(line[3]);
+					
+				}
+				
+				
+				
+				int stop_sequence;
+				
+				if(line[4].equals("") || line[4].equals(" ")) {
+					
+					stop_sequence = -1;
+					
+				}
+				
+				else {
+					
+					stop_sequence = Integer.parseInt(line[4]);
+					
+				}
+				
+				
+				
+				int stop_headsign;
+				
+				if(line[5].equals("") || line[5].equals(" ")) {
+					
+					stop_headsign = -1;
+					
+				}
+				
+				else {
+					
+					stop_headsign = Integer.parseInt(line[5]);
+					
+				}
+				
+				
+				
+				int pickup_type;
+				
+				if(line[6].equals("") || line[6].equals(" ")) {
+					
+					pickup_type = -1;
+					
+				}
+				
+				else {
+					
+					pickup_type = Integer.parseInt(line[6]);
+					
+				}
+				
+				
+				
+				int drop_off_type;
+				
+				if(line[7].equals("") || line[7].equals(" ")) {
+					
+					drop_off_type = -1;
+					
+				}
+				
+				else {
+					
+					drop_off_type = Integer.parseInt(line[7]);
+					
+				}
+				
+				
+				
+				float shape_dist_travelled;
+				
+				if(line[8].equals("") || line[8].equals(" ")) {
+					
+					shape_dist_travelled = -1;
+					
+				}
+				
+				else {
+					
+					shape_dist_travelled = Float.parseFloat(line[8]);
+					
+				}
+				
+				
+				
+				stopTimes stopTimes = new stopTimes(trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type, shape_dist_travelled);
+				
+				stopTimesList.add(stopTimes);
+				stopTimesHashMap.put(stop_id, stopTimes);
+				
+			}
+			
+		}
+		
+		BR.close();
+		
+	}
+	
+	public boolean validTimeCheck(String timeInput) {
+		
+		timeInput = timeInput.replaceAll("//s", ""); // removing all spaces from the string
+		
+		String[] hoursMinutesSeconds = timeInput.split(":");
+		
+		int hours;
+		int minutes;
+		int seconds;
+		
+		try {
+			
+			hours = Integer.parseInt(hoursMinutesSeconds[0]);
+			minutes = Integer.parseInt(hoursMinutesSeconds[1]);
+			seconds = Integer.parseInt(hoursMinutesSeconds[2]);
+			
+		}
+		
+		catch (Exception e) {
+			
+			return false;
+			
+		}
+		
+		if ( (00 <= hours) && (hours <= 23) && (00 <= minutes) && (minutes <= 59) && (00 <= seconds) && (seconds <= 59)) {
+			
+			return true;
+			
+		}
+		
+		else {
+			
+			return false;
+			
+		}
 		
 	}
 
