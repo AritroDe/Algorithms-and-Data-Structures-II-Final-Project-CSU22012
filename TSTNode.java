@@ -1,18 +1,18 @@
 public class TSTNode {
 	
-    char data;
-    boolean isEnd;
-    TSTNode left;
-    TSTNode middle;
-    TSTNode right;
+    char value;
+    boolean finished;
+    TSTNode l;
+    TSTNode r;
+    TSTNode mid;
     
-    public TSTNode(char data) {
+    public TSTNode(char valueInput) {
     	
-        this.data = data;
-        isEnd = false;
-        left = null;
-        right = null;
-        middle = null;
+        this.value = valueInput;
+        finished = false;
+        l = null;
+        r = null;
+        mid = null;
         
     }
     

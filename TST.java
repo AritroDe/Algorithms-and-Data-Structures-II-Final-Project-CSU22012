@@ -21,5 +21,51 @@ public class TST {
         node = null;
         
     }
+ 
+    public void insert(String word) {
+    	
+    	char[] w = word.toCharArray();
+        node = insertRecursive(node, w, 0);
+        
+    }
+
+    public TSTNode insertRecursive(TSTNode node, char[] w, int i) {
+    	
+        if (node == null) {
+        	
+            node = new TSTNode(w[i]);
+            
+        }
+
+        if (w[i] < node.value) {
+        	
+            node.l = insertRecursive(node.l, w, i);
+            
+        }
+        
+        else if (w[i] > node.value) {
+        	
+            node.r = insertRecursive(node.r, w, i);
+            
+        }
+        
+        else {
+        	
+            if (i + 1 < w.length) {
+            	
+                node.mid = insertRecursive(node.mid, w, i + 1);
+                
+            }
+            
+            else {
+            	
+                node.finished = true;
+                
+            }
+            
+        }
+        
+        return node;
+    }
     
 }
