@@ -43,29 +43,67 @@ public class TST {
             
         }
         
-        else if (w[i] > node.value) {
+        if (w[i] > node.value) {
         	
             node.r = insertRecursive(node.r, w, i);
             
         }
-        
+
+        if (i + 1 < w.length) {
+            	
+            node.mid = insertRecursive(node.mid, w, i + 1);
+                
+        }
+            
         else {
-        	
-            if (i + 1 < w.length) {
             	
-                node.mid = insertRecursive(node.mid, w, i + 1);
+            node.finished = true;
                 
-            }
-            
-            else {
-            	
-                node.finished = true;
-                
-            }
-            
         }
         
         return node;
+        
+    }
+    
+    public void delete(String word) {
+    	
+    	char[] w = word.toCharArray();
+        deleteRecursive(node, w, 0);
+        
+    }
+
+    private void deleteRecursive(TSTNode node, char[] w, int i) {
+    	
+        if (node == null) {
+        	
+            return;
+            
+        }
+
+        if (w[i] < node.value) {
+        	
+            deleteRecursive(node.l, w, i);
+            
+        }
+        
+        if (w[i] > node.value) {
+        	
+            deleteRecursive(node.r, w, i);
+            
+        }
+
+        if (node.finished && i == w.length - 1) {
+
+        	node.finished = false;
+            
+        }
+
+        else if (i + 1 < w.length) {
+
+        	deleteRecursive(node.mid, w, i + 1);
+
+        }
+        
     }
     
 }
