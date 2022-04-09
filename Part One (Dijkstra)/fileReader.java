@@ -28,7 +28,7 @@ public class fileReader {
 		
 	}
 	
-	private void stopsReader() throws IOException {
+	public void stopsReader() throws IOException {
 		
 		BufferedReader BR = new BufferedReader(new FileReader("C:\\Aritro De\\Trinity College\\Eclipse-Workspace\\AlgorithmsAndDataStructuresFinalProject\\src\\stops.txt"));
 		String s;

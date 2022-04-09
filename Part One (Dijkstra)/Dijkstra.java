@@ -312,11 +312,11 @@ public class Dijkstra {
 	   			
 	   			for(DirectedEdge startStop: totalPathTo) {
 	   				
-	   					System.out.println("From - " + startStop.from() + " to - "+ startStop.to() + " cost - "+ startStop.weight());
+	   					System.out.println("From - " + startStop.from() + ", to - "+ startStop.to() + ", cost - "+ startStop.weight());
 	   			
 	   			}
 	
-	   			System.out.println("OVERALL: From - " + startingStop + " To - " + endingStop + "  Cost - "+  distance);
+	   			System.out.println("OVERALL: From - " + startingStop + ", To - " + endingStop + ", Cost - "+  distance);
 	   			
    			}
    			
