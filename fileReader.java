@@ -30,7 +30,7 @@ public class fileReader {
 	
 	private void stopsReader() throws IOException {
 		
-		BufferedReader BR = new BufferedReader(new FileReader("stops.txt"));
+		BufferedReader BR = new BufferedReader(new FileReader("C:\\Aritro De\\Trinity College\\Eclipse-Workspace\\AlgorithmsAndDataStructuresFinalProject\\src\\stops.txt"));
 		String s;
 		
 		for(int i = 0; (s = BR.readLine()) != null; i++) {
@@ -184,7 +184,7 @@ public class fileReader {
 				}
 				
 				
-				
+				/*
 				String parent_station;
 				
 				if(line[9].equals("") || line[9].equals(" ")) {
@@ -198,10 +198,10 @@ public class fileReader {
 					parent_station = line[9];
 					
 				}
+				*/
 				
 				
-				
-				stops stop = new stops(stop_id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, parent_station);
+				stops stop = new stops(stop_id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type);
 				
 				stopsList.add(stop);
 				stopsHashMap.put(stop_id, stop);
@@ -216,7 +216,7 @@ public class fileReader {
 	
 	public void stopTimesReader() throws IOException {
 		
-		BufferedReader BR = new BufferedReader(new FileReader("stop_times.txt"));
+		BufferedReader BR = new BufferedReader(new FileReader("C:\\Aritro De\\Trinity College\\Eclipse-Workspace\\AlgorithmsAndDataStructuresFinalProject\\src\\stop_times.txt"));
 		String s;
 		
 		for(int i = 0; (s = BR.readLine()) != null; i++) {
@@ -354,7 +354,7 @@ public class fileReader {
 				}
 				
 				
-				
+				/*
 				float shape_dist_travelled;
 				
 				if(line[8].equals("") || line[8].equals(" ")) {
@@ -368,10 +368,10 @@ public class fileReader {
 					shape_dist_travelled = Float.parseFloat(line[8]);
 					
 				}
+				*/
 				
 				
-				
-				stopTimes stopTimes = new stopTimes(trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type, shape_dist_travelled);
+				stopTimes stopTimes = new stopTimes(trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type);
 				
 				stopTimesList.add(stopTimes);
 				
@@ -423,7 +423,7 @@ public class fileReader {
 
 	public void transfersReader() throws Exception {
 		
-		BufferedReader BR = new BufferedReader(new FileReader("transfers.txt"));
+		BufferedReader BR = new BufferedReader(new FileReader("C:\\Aritro De\\Trinity College\\Eclipse-Workspace\\AlgorithmsAndDataStructuresFinalProject\\src\\transfers.txt"));
 		String s;
 		
 		for(int i = 0; (s = BR.readLine()) != null; i++) {

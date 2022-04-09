@@ -1,36 +1,17 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Scanner;
+
 // Reference: https://algs4.cs.princeton.edu/code/edu/princeton/cs/algs4/DijkstraSP.java.html
 /**
- *  The {@code DijkstraSP} class represents a data type for solving the
- *  single-source shortest paths problem in edge-weighted digraphs
- *  where the edge weights are non-negative.
- *  <p>
- *  This implementation uses <em>Dijkstra's algorithm</em> with a
- *  <em>binary heap</em>. The constructor takes
- *  &Theta;(<em>E</em> log <em>V</em>) time in the worst case,
- *  where <em>V</em> is the number of vertices and <em>E</em> is
- *  the number of edges. Each instance method takes &Theta;(1) time.
- *  It uses &Theta;(<em>V</em>) extra space (not including the
- *  edge-weighted digraph).
- *  <p>
- *  This correctly computes shortest paths if all arithmetic performed is
- *  without floating-point rounding error or arithmetic overflow.
- *  This is the case if all edge weights are integers and if none of the
- *  intermediate results exceeds 2<sup>52</sup>. Since all intermediate
- *  results are sums of edge weights, they are bounded by <em>V C</em>,
- *  where <em>V</em> is the number of vertices and <em>C</em> is the maximum
- *  weight of any edge.
- *  <p>
- *  For additional documentation,    
- *  see <a href="https://algs4.cs.princeton.edu/44sp">Section 4.4</a> of    
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne. 
- *
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
 public class Dijkstra {
-    private double[] distTo;          // distTo[v] = distance  of shortest s->v path
-    private DirectedEdge[] edgeTo;    // edgeTo[v] = last edge on shortest s->v path
-    private IndexMinPQ<Double> pq;    // priority queue of vertices
+    private static double[] distTo;          // distTo[v] = distance  of shortest s->v path
+    private static DirectedEdge[] edgeTo;    // edgeTo[v] = last edge on shortest s->v path
+    private static IndexMinPQ<Double> pq;    // priority queue of vertices
 
     /**
      * Computes a shortest-paths tree from the source vertex {@code s} to every other
@@ -69,8 +50,30 @@ public class Dijkstra {
         assert check(G, s);
     }
 
+    public static void DijkstraVoid(EdgeWeightedDigraph G, int s) {
+    	
+    	distTo = new double[G.V()];
+        edgeTo = new DirectedEdge[G.V()];
+
+        validateVertex(s);
+
+        for (int v = 0; v < G.V(); v++)
+            distTo[v] = Double.POSITIVE_INFINITY;
+        distTo[s] = 0.0;
+
+        // relax vertices in order of distance from s
+        pq = new IndexMinPQ<Double>(G.V());
+        pq.insert(s, distTo[s]);
+        while (!pq.isEmpty()) {
+            int v = pq.delMin();
+            for (DirectedEdge e : G.adj(v))
+                relax(e);
+        }
+    	
+    }
+    
     // relax edge e and update pq if changed
-    private void relax(DirectedEdge e) {
+    private static void relax(DirectedEdge e) {
         int v = e.from(), w = e.to();
         if (distTo[w] > distTo[v] + e.weight()) {
             distTo[w] = distTo[v] + e.weight();
@@ -87,7 +90,7 @@ public class Dijkstra {
      *         {@code Double.POSITIVE_INFINITY} if no such path
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
-    public double distTo(int v) {
+    public static double distTo(int v) {
         validateVertex(v);
         return distTo[v];
     }
@@ -100,7 +103,7 @@ public class Dijkstra {
      *         {@code s} to vertex {@code v}; {@code false} otherwise
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
-    public boolean hasPathTo(int v) {
+    public static boolean hasPathTo(int v) {
         validateVertex(v);
         return distTo[v] < Double.POSITIVE_INFINITY;
     }
@@ -113,7 +116,7 @@ public class Dijkstra {
      *         as an iterable of edges, and {@code null} if no such path
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
-    public Iterable<DirectedEdge> pathTo(int v) {
+    public static Iterable<DirectedEdge> pathTo(int v) {
         validateVertex(v);
         if (!hasPathTo(v)) return null;
         Stack<DirectedEdge> path = new Stack<DirectedEdge>();
@@ -127,7 +130,7 @@ public class Dijkstra {
     // check optimality conditions:
     // (i) for all edges e:            distTo[e.to()] <= distTo[e.from()] + e.weight()
     // (ii) for all edge e on the SPT: distTo[e.to()] == distTo[e.from()] + e.weight()
-    private boolean check(EdgeWeightedDigraph G, int s) {
+    private static boolean check(EdgeWeightedDigraph G, int s) {
 
         // check that edge weights are non-negative
         for (DirectedEdge e : G.edges()) {
@@ -176,13 +179,11 @@ public class Dijkstra {
     }
 
     // throw an IllegalArgumentException unless {@code 0 <= v < V}
-    private void validateVertex(int v) {
+    private static void validateVertex(int v) {
         int V = distTo.length;
         if (v < 0 || v >= V)
             throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V-1));
     }
-    
-}
     
 /******************************************************************************
  *  Copyright 2002-2020, Robert Sedgewick and Kevin Wayne.
@@ -206,4 +207,124 @@ public class Dijkstra {
  *
  *  You should have received a copy of the GNU General Public License
  *  along with algs4.jar.  If not, see http://www.gnu.org/licenses.
+ * @throws Exception 
  ******************************************************************************/
+
+    public static void main(String[] args) throws Exception {
+
+    	fileReader files = new fileReader();
+    	ArrayList<stops> stopsList = files.stopsList;
+    	HashMap<Integer, stops> stopsHashMap = files.stopsHashMap;
+    	ArrayList<stopTimes> stopTimesList = files.stopTimesList;
+    	ArrayList<transfers> transfersList = files.transfersList;
+    	
+    	int largestStopID = 0;
+    	
+    	for (transfers iterator : transfersList) {
+    		
+    		if(iterator.from_stop_id > largestStopID) {
+    			
+    			largestStopID = iterator.from_stop_id;
+    			
+    		}
+    		
+    		if(iterator.to_stop_id > largestStopID) {
+    			
+    			largestStopID = iterator.to_stop_id;
+    			
+    		}
+    		
+    	}
+    	
+    	EdgeWeightedDigraph graph = new EdgeWeightedDigraph(largestStopID+1);
+    	
+    	int from_stop_id;
+    	int to_stop_id;
+    	int transfer_type;
+    	int min_transfer_time;
+    	double cost;
+    	
+		for(transfers iterator : transfersList){
+			
+			from_stop_id = iterator.from_stop_id;
+			to_stop_id = iterator.to_stop_id;
+			transfer_type = iterator.transfer_type;
+			min_transfer_time = iterator.min_transfer_time;
+			cost = iterator.cost;
+			DirectedEdge edge = new DirectedEdge(iterator.from_stop_id, iterator.to_stop_id,iterator.cost);
+			graph.addEdge(edge);
+			
+		}
+		
+		for(int i = 0; i+1 < stopTimesList.size(); i++) {
+			
+			if(stopTimesList.get(i).trip_id == stopTimesList.get(i+1).trip_id) {
+				
+				DirectedEdge sameTripEdge = new DirectedEdge(stopTimesList.get(i).stop_id, stopTimesList.get(i+1).stop_id, 1);
+				graph.addEdge(sameTripEdge);
+				
+			}
+			
+		}
+    	
+    	Scanner s = new Scanner(System.in);
+    	boolean quit = false;
+    	
+    	while(!quit) {
+    		
+    		System.out.println("What bus stop do you want to start at (or type the word 'quit' to leave the system):");
+    		
+    		if(s.hasNext("quit")) {
+    			
+    			quit = true;
+    			break;
+    			
+    		}
+    		
+    		int startingStop = s.nextInt();
+    		
+    		System.out.println("What bus stop you you like to end at (or type the word 'quit' to leave the system):");
+    		
+    		if(s.hasNext("quit")) {
+    			
+    			quit = true;
+    			break;
+    			
+    		}
+    		
+    		int endingStop = s.nextInt();
+    		
+    		double distance = 0;
+
+    		DijkstraVoid(graph, startingStop);
+    		distance = distTo(endingStop);
+    		pathTo(startingStop);
+    		
+   			Iterable<DirectedEdge> totalPathTo = pathTo(endingStop);
+   			
+   			if(totalPathTo == null) {
+   				
+   				System.out.println("Invalid path, please enter another route");
+   				
+   			}
+   			
+   			else {
+	   			
+	   			for(DirectedEdge startStop: totalPathTo) {
+	   				
+	   					System.out.println("From - " + startStop.from() + " to - "+ startStop.to() + " cost - "+ startStop.weight());
+	   			
+	   			}
+	
+	   			System.out.println("OVERALL: From - " + startingStop + " To - " + endingStop + "  Cost - "+  distance);
+	   			
+   			}
+   			
+    	}
+    	
+    	s.close();
+    	
+    }
+    
+}
+

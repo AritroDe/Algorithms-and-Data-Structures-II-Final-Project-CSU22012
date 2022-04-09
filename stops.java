@@ -9,9 +9,8 @@ public class stops {
     String zone_id;
     String stop_url;
     int location_type;
-    String parent_station;
     
-    public stops(int stop_id, int stop_code, String stop_name, String stop_desc, double stop_lat, double stop_lon, String zone_id, String stop_url, int location_type, String parent_station) {
+    public stops(int stop_id, int stop_code, String stop_name, String stop_desc, double stop_lat, double stop_lon, String zone_id, String stop_url, int location_type) {
         
     	this.stop_id = stop_id;
         this.stop_code = stop_code;
@@ -22,7 +21,6 @@ public class stops {
         this.zone_id = zone_id;
         this.stop_url = stop_url;
         this.location_type = location_type;
-        this.parent_station = parent_station;
         
     }
 	

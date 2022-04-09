@@ -16,7 +16,7 @@ public class TST {
     	for (int i = 0; i < stopsList.size(); i++) {
     		
 			TST.insert(stopsList.get(i).stop_name);
-			
+				
 		}
     	
     }
@@ -240,5 +240,35 @@ public class TST {
     	}
 
     }
+    
+    
+    public String printTree() {
+    	
+		stringArrayList = new ArrayList<String>();
+		traverse(node, "");
+		return "\nTernary Search Tree : "+ stringArrayList;
+		
+	}
+    
+	private void traverse(TSTNode node, String s) {
+		
+		if (node != null) {
+			
+			traverse(node.l, s);
+			s += node.value;
+			
+			if (node.finished) {
+				
+				stringArrayList.add(s);
+				
+			}
+
+			traverse(node.mid, s);
+			s = s.substring(0, s.length() - 1);
+			traverse(node.r, s);
+			
+		}
+		
+	}
     
 }
