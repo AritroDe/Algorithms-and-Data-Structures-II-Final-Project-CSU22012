@@ -322,8 +322,6 @@ public class Dijkstra {
    			
     	}
     	
-    	s.close();
-    	
     }
     
 }
