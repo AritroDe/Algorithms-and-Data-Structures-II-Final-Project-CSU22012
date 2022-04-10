@@ -17,42 +17,40 @@ public class Main {
 			
 			String input = s.next();
 			
-			if(input == null) {
+			if(input.equalsIgnoreCase("quit")) {
 				
-				System.out.print("=> ");
-				
-			}
-
-			if(Integer.parseInt(input) == 1 || Integer.parseInt(input) == 2 || Integer.parseInt(input) == 3) {
-				
-				int selection = Integer.parseInt(input);
-				
-				if(selection == 1) {
-					
-					Dijkstra.main(args);
-					
-				}
-				
-				else if(selection == 2) {
-					
-					TST.main(args);
-					
-				}
-				
-				else if(selection == 3) {
-					
-					searchByTime.main(args);
-					
-				}
+				System.out.println("Quitting Programme");
+				quit = true;
+				break;
 				
 			}
 			
 			else {
 				
-				if(input.equalsIgnoreCase("quit")) {
-				
-					quit = true;
-					break;
+				if(Integer.parseInt(input) == 1 || Integer.parseInt(input) == 2 || Integer.parseInt(input) == 3) {
+					
+					int selection = Integer.parseInt(input);
+					
+					if(selection == 1) {
+						
+						System.out.println("Loading Dijkstra...");
+						Dijkstra.main(args);
+						
+					}
+					
+					else if(selection == 2) {
+						
+						System.out.println("Loading TST...");
+						TST.main(args);
+						
+					}
+					
+					else if(selection == 3) {
+						
+						System.out.println("Loading searchByTime...");
+						searchByTime.main(args);
+						
+					}
 					
 				}
 				
